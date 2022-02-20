@@ -21,10 +21,8 @@ function fillTheForm() {
 form.addEventListener(
   'input',
   throttle(onInput => {
-    let formData = localStorage.getItem(FORM_KEY);
-    formData = formData ? JSON.parse(formData) : {};
-    formData[onInput.target.name] = onInput.target.value;
-    if (!formData) return;
+    formData.email = form.elements.email.value;
+    formData.message = form.elements.message.value;
     localStorage.setItem(FORM_KEY, JSON.stringify(formData));
   }, 1000),
 );
@@ -35,6 +33,7 @@ form.addEventListener('submit', onSubmit => {
   formDataToSend.forEach((value, name) => {
     formData[name] = value;
   });
+  if (!formData.email || !formData.message) return;
   onSubmit.currentTarget.reset();
   localStorage.removeItem(FORM_KEY);
   console.log(formData);
